@@ -3,6 +3,9 @@ import shutil
 
 
 file_memo = {
+    'for-folders': "Folders",
+    'for-other-files': "Other Files",
+
     'pdf': 'PDF-document',
     'png': 'Images',
     'jpg': 'Images',
@@ -128,8 +131,6 @@ def print_like_table(index, filename, ext, your_path):
 
 
 
-def move_file(source, destination):
-    shutil.move(source, destination)
 
 
 @table_pretti
@@ -143,23 +144,31 @@ def organize_files(directory):
     Returns:
         None
     """
-    index = 0
-    for file in os.listdir(directory):
+    for index, file in enumerate(os.listdir(directory), 1):
+        filename, ext = os.path.splitext(file)
+
+        def engine(category):
+            target_dir = os.path.join(directory, category)
+
+            os.makedirs(target_dir, exist_ok=True)
+            shutil.move(os.path.join(directory, file), os.path.join(target_dir, file))
+
+            print_like_table(index,
+                     filename, ext, category)
+            
+
+            
         if os.path.isfile(os.path.join(directory, file)):
-            filename, ext = os.path.splitext(file)
             
             if (ext := ext[1:].lower()) in file_memo:
                 category = file_memo[ext]
-                target_dir = os.path.join(directory, category)
+                engine(category)
 
-                os.makedirs(target_dir, exist_ok=True)
-                move_file(os.path.join(directory, file),
-                          os.path.join(target_dir, file))
-                
-                print_like_table((index := index+1), filename, ext, category)
+            elif filename not in file_memo.values():
+                engine("Other Files")
 
-            # elif filename not in file_memo.values():
-            #     pass
+        elif filename not in file_memo.values():
+            engine("Folders")
 
 
 @table_pretti
@@ -180,7 +189,7 @@ def disorganize_files(directory):
         target_dir = os.path.join(directory, category)
         if os.path.exists(target_dir):
             for file in os.listdir(target_dir):
-                move_file(os.path.join(target_dir, file),
+                shutil.move(os.path.join(target_dir, file),
                           os.path.join(directory, file))
                 
                 filename, ext = os.path.splitext(file)
@@ -199,16 +208,19 @@ def disorganize_files(directory):
 
 if __name__ == '__main__':
     directory_path = input("\nEnter the directory: ")
-    operation_type = input("Choose operation type: \nOrganization    == 1 \nDisorganization == 2: ")
+    if os.path.isdir(directory_path):
+        operation_type = input("\nChoose operation type: \nOrganization    == 1 \nDisorganization == 2: ")
 
-    if operation_type == '1':
-        organize_files(directory_path)
-    elif operation_type == '2':
-        confirmation = input(
-            "Are you sure you want to disorganize files? (Press 1 to confirm): ")
-        if confirmation == '1':
-            disorganize_files(directory_path)
+        if operation_type == '1':
+            organize_files(directory_path)
+        elif operation_type == '2':
+            confirmation = input(
+                "Are you sure you want to disorganize files? (Press 1 to confirm): ")
+            if confirmation == '1':
+                disorganize_files(directory_path)
+            else:
+                print("Disorganization operation canceled.")
         else:
-            print("Disorganization operation canceled.")
+            print("Invalid operation type selected. Please choose 1 for organization or 2 for disorganization.")
     else:
-        print("Invalid operation type selected. Please choose 1 for organization or 2 for disorganization.")
+        print("Please provide the accurate directory path.")
