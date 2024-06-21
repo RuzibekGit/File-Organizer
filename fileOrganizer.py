@@ -204,7 +204,7 @@ def disorganize_files(directory):
 
 
 if __name__ == '__main__':
-    directory_path = input("Enter the directory: ")
+    directory_path = input("\nEnter the directory: ")
     operation_type = input("Choose operation type: \nOrganization    == 1 \nDisorganization == 2: ")
 
     if operation_type == '1':
