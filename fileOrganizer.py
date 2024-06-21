@@ -43,7 +43,6 @@ file_memo = {
     'log': 'Logs',
     'bak': 'Backups',
     'cfg': 'Configuration Files',
-    'ini': 'INI Files',
     'dll': 'Dynamic Link Libraries',
     'bat': 'Batch Scripts',
     'sh': 'Shell Scripts',
@@ -164,7 +163,7 @@ def organize_files(directory):
                 category = file_memo[ext]
                 engine(category)
 
-            elif filename not in file_memo.values():
+            elif filename not in file_memo.values() and ext != "ini":
                 engine("Other Files")
 
         elif filename not in file_memo.values():
