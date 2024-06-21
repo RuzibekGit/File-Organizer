@@ -159,13 +159,7 @@ def organize_files(directory):
                 print_like_table((index := index+1), filename, ext, category)
 
             # elif filename not in file_memo.values():
-            #     category = file_memo[ext]
-            #     target_dir = os.path.join(directory, category)
-            #     os.makedirs(target_dir, exist_ok=True)
-            #     move_file(os.path.join(directory, file),
-            #               os.path.join(target_dir, file))
-
-            #     print_like_table((index := index+1), filename, ext, category)
+            #     pass
 
 
 @table_pretti
