@@ -110,7 +110,7 @@ file_memo = {
 }
 
 
-def table_pretti(func):
+def table_pretty(func):
     def wrapper(*args, **kwargs):
         print("\n No:  | File Name           |  Move To ")
         print(  "------|---------------------|----------")
@@ -132,7 +132,7 @@ def print_like_table(index, filename, ext, your_path):
 
 
 
-@table_pretti
+@table_pretty
 def organize_files(directory):
     """
     Organizes files in the specified directory based on their extensions.
@@ -170,7 +170,7 @@ def organize_files(directory):
             engine("Folders")
 
 
-@table_pretti
+@table_pretty
 def disorganize_files(directory):
     """
     Undoes the organization done by organize_files.
