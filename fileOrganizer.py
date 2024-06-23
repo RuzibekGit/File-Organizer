@@ -195,8 +195,11 @@ def disorganize_files(directory):
 
                 print_like_table((index := index+1), filename, ext, os.path.basename(directory))
 
-            os.rmdir(target_dir)
-            memo.append(f"Removed directory: {category}")
+            try:
+                os.rmdir(target_dir)
+                memo.append(f"Removed directory: {category}")
+            except PermissionError:
+                memo.append(f"Directory cannot be removed: {category}")
 
     print("------|---------------------|----------")
     for f in memo:
